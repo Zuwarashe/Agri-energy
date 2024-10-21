@@ -1,0 +1,64 @@
+﻿@model List<Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1 class="text-center">Moo there Farmer</h1>
+
+<h2 class="text-center mb-5">Products</h2>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <a class="btn btn-primary" asp-controller="Products" asp-action="Create">New Product</a>
+    </div>
+    <div class="col-md-8">
+        <form asp-controller="Products" asp-action="Index" method="get" class="row g-2">
+            <div class="col-md-3">
+                <select class="form-control" name="filterType">
+                    <option value="">Filter By</option>
+                    <option value="Date">Date</option>
+                    <option value="Category">Category</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" type="text" name="searchValue" placeholder="Enter value (dd/MM/yyyy or category)">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a class="btn btn-secondary" asp-controller="Products" asp-action="Index">Undo</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table bg-white">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Added By</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td class="text-black">@product.Id</td>
+                <td class="text-black">@product.productName</td>
+                <td class="text-black">@product.category</td>
+                <td class="text-black">@product.price</td>
+                <td class="text-black">@product.date.ToString("dd/MM/yyyy")</td>
+                <td class="text-black">@product.User?.Email</td>
+                <td style="white-space: nowrap">
+                    <a class="btn btn-primary" asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
